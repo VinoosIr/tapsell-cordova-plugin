@@ -1,4 +1,5 @@
 ﻿
+
 ## Tapsell Plugin 
 
 Cordova / PhoneGap Plugin for Tapsell.
@@ -170,7 +171,8 @@ Other Documentations:
 ## Screenshots
 
 Android Banner | Android Interstitial
-![ScreenShot](https://github.com/floatinghotpot/cordova-admob-pro/raw/master/docs/android.jpg) | ![ScreenShot](https://github.com/floatinghotpot/cordova-admob-pro/raw/master/docs/android_interstitial.jpg)
+-------|---------------
+![ScreenShot](https://raw.githubusercontent.com/VinoosIr/tapsell-cordova-plugin/master/docs/screenshot_banner.png) | ![ScreenShot](https://raw.githubusercontent.com/VinoosIr/tapsell-cordova-plugin/master/docs/screenshot_interstitial.png)
 
 
 ## License
