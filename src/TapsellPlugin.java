@@ -305,7 +305,12 @@ public class TapsellPlugin extends CordovaPlugin {
 			zoneId = null;
 		}
 		TapsellAdRequestOptions options = new TapsellAdRequestOptions();
-        options.setCacheType(cacheType);
+		if (cacheType == 1) {
+			options.setCacheType(TapsellAdRequestOptions.CACHE_TYPE_CACHED);
+		} else {
+			options.setCacheType(TapsellAdRequestOptions.CACHE_TYPE_STREAMED);
+		}
+        
 		Tapsell.requestAd(mActivity, zoneId, options, new TapsellAdRequestListener() {
 
 			@Override
