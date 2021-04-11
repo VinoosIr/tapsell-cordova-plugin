@@ -1,10 +1,10 @@
 repositories{    
-  jcenter()
-  maven {
-    url 'https://dl.bintray.com/tapsellorg/maven'
-  }
+	jcenter()
+	maven {
+		url 'https://dl.bintray.com/tapsellorg/maven'
+	}
 }
 
 dependencies {
-  implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.5.0'
+	implementation 'ir.tapsell.sdk:tapsell-sdk-android:4.6.3-rc5'
 }
