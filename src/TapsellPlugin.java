@@ -1,4 +1,4 @@
-package miladesign.cordova.tapsell;
+package miladesign.cordova;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -6,7 +6,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
@@ -20,12 +20,12 @@ import ir.tapsell.sdk.TapsellAd;
 import ir.tapsell.sdk.TapsellAdRequestListener;
 import ir.tapsell.sdk.TapsellAdRequestOptions;
 import ir.tapsell.sdk.TapsellAdShowListener;
-import ir.tapsell.sdk.TapsellRewardListener;
 import ir.tapsell.sdk.TapsellShowOptions;
 import ir.tapsell.sdk.bannerads.TapsellBannerType;
 import ir.tapsell.sdk.bannerads.TapsellBannerView;
 import ir.tapsell.sdk.bannerads.TapsellBannerViewEventListener;
 
+@SuppressLint("RtlHardcoded")
 public class TapsellPlugin extends CordovaPlugin {
 	private static final String LOG_TAG = "TapsellPlugin";
 	private static Activity mActivity = null;
@@ -108,13 +108,6 @@ public class TapsellPlugin extends CordovaPlugin {
 	
 	private void init(String appKey) {
 		Tapsell.initialize(_app, appKey);
-		Tapsell.setRewardListener(new TapsellRewardListener() {
-			@Override
-			public void onAdShowFinished(TapsellAd ad, boolean completed) {
-				String json = String.format("{'completed':%b, 'isRewardedAd':%b, 'id':'%s'}", new Object[] { completed, ad.isRewardedAd(), ad.getId() });
-			    fireEvent("tapsell", "onAdShowFinished", json);
-			}
-		});
 	}
 	
 	private void createBanner(final String zoneId, final int position, final int size) {
@@ -327,7 +320,7 @@ public class TapsellPlugin extends CordovaPlugin {
 			    fireEvent("tapsell", "onAdAvailable", json);
 			}
 
-			@Override
+			/*@Override
 			public void onNoAdAvailable() {
 				tapsellAd = null;
 				String json = String.format("{'adType':'%s'}", new Object[] { "nonBanner" });
@@ -346,7 +339,7 @@ public class TapsellPlugin extends CordovaPlugin {
 				tapsellAd = ad;
 				String json = String.format("{'adType':'%s'}", new Object[] { "nonBanner" });
 			    fireEvent("tapsell", "onExpiring", json);
-			}
+			}*/
 		});
 		
 	}
@@ -362,7 +355,7 @@ public class TapsellPlugin extends CordovaPlugin {
         showOptions.setImmersiveMode(immersiveMode);
         showOptions.setRotationMode(rotationMode);
         showOptions.setShowDialog(showDialog);
-		tapsellAd.show(mActivity, showOptions, new TapsellAdShowListener() {
+		Tapsell.showAd(mActivity, tapsellAd.getZoneId(), tapsellAd.getId(), showOptions, new TapsellAdShowListener() {
 		    @Override
 		    public void onOpened(TapsellAd ad) {
 				String json = String.format("{'adType':'%s'}", new Object[] { "nonBanner" });
@@ -373,6 +366,17 @@ public class TapsellPlugin extends CordovaPlugin {
 				String json = String.format("{'adType':'%s'}", new Object[] { "nonBanner" });
 			    fireEvent("tapsell", "onClosed", json);
 		    }
+		    @Override
+            public void onError(String message) {
+				String json = String.format("{'adType':'%s', 'message':'%s'}", new Object[] { "nonBanner", message });
+			    fireEvent("tapsell", "onError", json);
+            }
+
+            @Override
+            public void onRewarded(boolean completed) {
+				String json = String.format("{'adType':'%s', 'completed':%b}", new Object[] { "nonBanner", completed });
+			    fireEvent("tapsell", "onRewarded", json);
+            }
 		});
 	}
 	

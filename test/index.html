@@ -103,52 +103,11 @@
 
         function initAd() {
 
-            $(document).on('onAdShowFinished', function(e) {
-                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
-                var data = e.detail || e.data || e;
-
-                consoleLog("onAdShowFinished. Completed: " + data.completed + " Reward Id: " + data.id);
-            });
-
             $(document).on('onAdAvailable', function(e) {
                 if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
                 var data = e.detail || e.data || e;
 
                 consoleLog("onAdAvailable");
-            });
-
-            $(document).on('onNoAdAvailable', function(e) {
-                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
-                var data = e.detail || e.data || e;
-
-                if (data.adType == 'nonBanner') {
-                    consoleLog("onAdAvailable");
-                }
-            });
-
-            $(document).on('onError', function(e) {
-                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
-                var data = e.detail || e.data || e;
-
-                if (data.adType == 'nonBanner') {
-                    consoleLog("onError. Error Message: " + data.message);
-                }
-            });
-
-            $(document).on('onNoNetwork', function(e) {
-                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
-                var data = e.detail || e.data || e;
-
-                if (data.adType == 'nonBanner') {
-                    consoleLog("onNoNetwork");
-                }
-            });
-
-            $(document).on('onExpiring', function(e) {
-                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
-                var data = e.detail || e.data || e;
-
-                consoleLog("onExpiring");
             });
 
             $(document).on('onOpened', function(e) {
@@ -165,18 +124,59 @@
                 consoleLog("onClosed");
             });
 
+            $(document).on('onRewarded', function(e) {
+                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
+                var data = e.detail || e.data || e;
+
+                consoleLog("onRewarded. Completed: " + data.completed);
+            });
+
+            $(document).on('onError', function(e) {
+                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
+                var data = e.detail || e.data || e;
+
+                if (data.adType == 'nonBanner') {
+                    consoleLog("Interstitial. Error Message: " + data.message);
+                } else {
+					consoleLog("Banner. Error Message: " + data.message);
+				}
+            });
+
+
+			/// BANNER ///
+            $(document).on('onNoAdAvailable', function(e) {
+                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
+                var data = e.detail || e.data || e;
+
+                if (data.adType == 'banner') {
+                    consoleLog("Banner onNoAdAvailable");
+                }
+            });
+            $(document).on('onNoNetwork', function(e) {
+                if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
+                var data = e.detail || e.data || e;
+
+                if (data.adType == 'banner') {
+                    consoleLog("Banner onNoNetwork");
+                }
+            });
+
             $(document).on('onRequestFilled', function(e) {
                 if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
                 var data = e.detail || e.data || e;
 
-                consoleLog("onRequestFilled");
+                if (data.adType == 'banner') {
+                    consoleLog("Banner onRequestFilled");
+                }
             });
 
             $(document).on('onHideBannerView', function(e) {
                 if (typeof e.originalEvent !== 'undefined') e = e.originalEvent;
                 var data = e.detail || e.data || e;
 
-                consoleLog("onHideBannerView");
+                if (data.adType == 'banner') {
+                    consoleLog("Banner onHideBannerView");
+                }
             });
 
             Tapsell.initialize("mfohttsmherqqqlkgeeedprkssdbmkbdioaqkicfhcrbrjsrdedsjpeccacinlgfoordce");
